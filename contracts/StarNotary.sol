@@ -1,4 +1,4 @@
-pragma solidity >=0.4.24;
+pragma solidity >=0.8.11;
 
 //Importing openzeppelin-solidity ERC-721 implemented Standard
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
@@ -12,8 +12,11 @@ contract StarNotary is ERC721 {
     }
 
     // Implement Task 1 Add a name and symbol properties
+    string public constant name = "JerBear Token";
     // name: Is a short name to your token
+    string public constant symbol = "JBT";
     // symbol: Is a short string like 'USD' -> 'American Dollar'
+    uint8 public constant decimals = 18;
     
 
     // mapping the Star with the Owner Address
@@ -56,11 +59,21 @@ contract StarNotary is ERC721 {
 
     // Implement Task 1 lookUptokenIdToStarInfo
     function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
+        return tokenIdToStarInfo[_tokenId].name;
         //1. You should return the Star saved in tokenIdToStarInfo mapping
     }
 
     // Implement Task 1 Exchange Stars function
     function exchangeStars(uint256 _tokenId1, uint256 _tokenId2) public {
+        address tokenExchanger;
+        address tokenReceiver;
+        uint256 token1;
+        uint256 token2;
+        require(ownerOf(_tokenId1) == msg.sender || ownerOf(_tokenId2) == msg.sender,"You cannot exchange a star you do not own");
+        
+
+    _transferFrom(tokenExchanger, tokenReceiver, token1);
+    _transferFrom(tokenReciever, tokenExchanger, token2);
         //1. Passing to star tokenId you will need to check if the owner of _tokenId1 or _tokenId2 is the sender
         //2. You don't have to check for the price of the token (star)
         //3. Get the owner of the two tokens (ownerOf(_tokenId1), ownerOf(_tokenId1)
@@ -69,8 +82,10 @@ contract StarNotary is ERC721 {
 
     // Implement Task 1 Transfer Stars
     function transferStar(address _to1, uint256 _tokenId) public {
+        require(ownerOf(_tokenId) == msg.sender,"You cannot transfer a star you do not own");
         //1. Check if the sender is the ownerOf(_tokenId)
         //2. Use the transferFrom(from, to, tokenId); function to transfer the Star
+        _transferFrom(_to1, tokenId);
     }
 
 }
