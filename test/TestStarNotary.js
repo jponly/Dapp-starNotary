@@ -93,8 +93,8 @@ it('lets 2 users exchange stars', async() => {
     await instance.createStar('Star Number 7', tokenId1, {from: accounts[0]})
     await instance.createStar('Star Number 8', tokenId2, {from: accounts[1]})
     await instance.exchangeStars(tokenId1, tokenId2, { from: accounts[0] })
-    assert.equal(await instance.ownerOf.call(tokenId1), accounts[1])
-    assert.equal(await instance.ownerOf.call(tokenId2), accounts[0])
+    assert.equal(await instance.ownerOf.call(tokenId1), accounts[0])
+    assert.equal(await instance.ownerOf.call(tokenId2), accounts[1])
     // 1. create 2 Stars with different tokenId
     // 2. Call the exchangeStars functions implemented in the Smart Contract
     // 3. Verify that the owners changed
