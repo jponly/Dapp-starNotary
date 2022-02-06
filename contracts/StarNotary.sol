@@ -1,7 +1,7 @@
-pragma solidity >=0.4.24;
+pragma solidity >=0.8.11;
 
 //Importing openzeppelin-solidity ERC-721 implemented Standard
-import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
+import "../app/node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 
 // StarNotary Contract declaration inheritance the ERC721 openzeppelin implementation
 contract StarNotary is ERC721 {
@@ -32,7 +32,7 @@ contract StarNotary is ERC721 {
 
     // Putting an Star for sale (Adding the star tokenid into the mapping starsForSale, first verify that the sender is the owner)
     function putStarUpForSale(uint256 _tokenId, uint256 _price) public {
-        require(ownerOf(_tokenId) == msg.sender, "You can't sale the Star you don't owned");
+        require(ownerOf(_tokenId) == msg.sender, "You can't sale the Star you don't own");
         starsForSale[_tokenId] = _price;
     }
 
@@ -63,11 +63,15 @@ contract StarNotary is ERC721 {
 
     // Implement Task 1 Exchange Stars function
     function exchangeStars(uint256 _tokenId1, uint256 _tokenId2) public {
-        address tokenExchanger;
-        address tokenReceiver;
-        uint256 token1;
-        uint256 token2;
+        //address tokenExchanger;
+        //address tokenReceiver;
+        //uint256 token1;
+        //uint256 token2;
         require(ownerOf(_tokenId1) == msg.sender || ownerOf(_tokenId2) == msg.sender,"You can't exchange a star you don't own.");
+        address ownerAddress1 = ownerOf(_tokenId1);
+        address ownerAddress2 = ownerOf(_tokenId2);
+        _transferFrom(ownerAddress1, ownerAddress2, _tokenId1);
+        _transferFrom(ownerAddress2, ownerAddress1, _tokenId2);
         //1. Passing to star tokenId you will need to check if the owner of _tokenId1 or _tokenId2 is the sender
         //2. You don't have to check for the price of the token (star)
         //3. Get the owner of the two tokens (ownerOf(_tokenId1), ownerOf(_tokenId1)
